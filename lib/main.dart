@@ -35,7 +35,12 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product Listing'),
+        backgroundColor: Colors.grey[850],
+        title: const Text(
+          'Product Listing',
+          style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
       body: ListView(
         shrinkWrap: true,
@@ -45,27 +50,27 @@ class _MyHomePageState extends State<MyHomePage> {
               name: "iPhone",
               description: "iPhone is the stylist phone ever",
               price: 1000,
-              image: "ade.jpg"),
+              image: "iphone.PNG"),
           ProductBox(
               name: "Pixel",
               description: "Pixel is the most featureful phone ever",
               price: 800,
-              image: "adewale.PNG"),
+              image: "pixel.PNG"),
           ProductBox(
               name: "Laptop",
               description: "Laptop is most productive development tool",
               price: 2000,
-              image: "ade.jpg"),
+              image: "laptop.PNG"),
           ProductBox(
               name: "Tablet",
               description: "Tablet is the most useful device ever for meeting",
               price: 1500,
-              image: 'adewale.PNG'),
+              image: 'phone.PNG'),
           ProductBox(
               name: "Pendrive",
               description: "Pendrive is useful storage medium",
               price: 100,
-              image: "ade.jpg"),
+              image: "techno.PNG"),
           ProductBox(
               name: "Floppy Drive",
               description: "Floppy drive is useful rescue storage medium",
@@ -134,7 +139,9 @@ class _RatingBoxState extends State<RatingBox> {
         Container(
           padding: const EdgeInsets.all(0),
           child: IconButton(
-            onPressed:(){},
+            onPressed: () {
+              _setRatingAsTwo();
+            },
             icon: (_rating >= 2
                 ? Icon(
                     Icons.star,
@@ -200,7 +207,7 @@ class ProductBox extends StatelessWidget {
               padding: const EdgeInsets.all(5),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   Text(
                     name,
