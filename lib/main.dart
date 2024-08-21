@@ -163,8 +163,9 @@ class ProductBox extends StatelessWidget {
                       ),
                       // ignore: prefer_interpolation_to_compose_strings
                       Text('Price:' + item.price.toString()),
-                      ScopedModelDescendant(builder: (context, child, item) {
-                        return RatingBox(item: this.item);
+                      ScopedModelDescendant<Product>(
+                          builder: (context, child, item) {
+                        return RatingBox(item: item);
                       })
                     ],
                   ),
