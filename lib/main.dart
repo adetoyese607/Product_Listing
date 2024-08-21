@@ -23,6 +23,68 @@ class MyApp extends StatelessWidget {
   }
 }
 
+class ProductPage extends StatelessWidget {
+  const ProductPage({super.key, required this.item});
+  final Product item;
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        backgroundColor: Colors.grey[850],
+        title: Text(
+          item.name,
+        ),
+        centerTitle: true,
+      ),
+      body: Center(
+          child: Container(
+      padding: const EdgeInsets.all(2),    
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Image.asset(
+              'assets/${item.image}',
+              // width: 400
+            ),
+            Expanded(
+              child: Container(
+                padding: const EdgeInsets.all(5),
+                child: ScopedModel<Product>(
+                  model: item,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      Text(
+                        item.name,
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        item.description,
+                      ),
+                      // ignore: prefer_interpolation_to_compose_strings
+                      Text('Price:' + item.price.toString()),
+                      ScopedModelDescendant<Product>(
+                          builder: (context, child, item) {
+                        return RatingBox(item: item);
+                      })
+                    ],
+                  ),
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    ),
+    );
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -48,7 +110,15 @@ class _MyHomePageState extends State<MyHomePage> {
         body: ListView.builder(
             itemCount: items.length,
             itemBuilder: (context, index) {
-              return ProductBox(item: items[index]);
+              return GestureDetector(
+                child: ProductBox(item: items[index]),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ProductPage(item: items[index]))
+                  );
+                },
+              );
             }));
   }
 }
