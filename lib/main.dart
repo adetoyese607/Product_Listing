@@ -3,12 +3,22 @@ import 'package:scoped_model/scoped_model.dart';
 import 'product.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatelessWidget with SingleTickerProviderStateMixin {
   const MyApp({super.key});
+  Animation<double> animation;
+  AnimationController controller;
 
+ @override
+ void initState() {
+  //  super.initState();
+   controller =
+        AnimationController(duration: const Duration(seconds: 10), vsync: this);
+    animation = Tween<double>(begin: 0.0, end: 1.0).animate(controller);
+    controller.forward();
+ }
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -20,6 +30,13 @@ class MyApp extends StatelessWidget {
       ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
+  }
+
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }
 
@@ -38,49 +55,49 @@ class ProductPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-          child: Container(
-      padding: const EdgeInsets.all(2),    
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Image.asset(
-              'assets/${item.image}',
-              // width: 400
-            ),
-            Expanded(
-              child: Container(
-                padding: const EdgeInsets.all(5),
-                child: ScopedModel<Product>(
-                  model: item,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: <Widget>[
-                      Text(
-                        item.name,
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
+        child: Container(
+          padding: const EdgeInsets.all(2),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Image.asset(
+                'assets/${item.image}',
+                // width: 400
+              ),
+              Expanded(
+                child: Container(
+                  padding: const EdgeInsets.all(5),
+                  child: ScopedModel<Product>(
+                    model: item,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: <Widget>[
+                        Text(
+                          item.name,
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
-                      ),
-                      Text(
-                        item.description,
-                      ),
-                      // ignore: prefer_interpolation_to_compose_strings
-                      Text('Price:' + item.price.toString()),
-                      ScopedModelDescendant<Product>(
-                          builder: (context, child, item) {
-                        return RatingBox(item: item);
-                      })
-                    ],
+                        Text(
+                          item.description,
+                        ),
+                        // ignore: prefer_interpolation_to_compose_strings
+                        Text('Price:' + item.price.toString()),
+                        ScopedModelDescendant<Product>(
+                            builder: (context, child, item) {
+                          return RatingBox(item: item);
+                        })
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            )
-          ],
+              )
+            ],
+          ),
         ),
       ),
-    ),
     );
   }
 }
@@ -114,9 +131,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 child: ProductBox(item: items[index]),
                 onTap: () {
                   Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => ProductPage(item: items[index]))
-                  );
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ProductPage(item: items[index])));
                 },
               );
             }));
